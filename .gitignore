@@ -1,0 +1,10 @@
+venv/
+
+.idea/
+.idea/**/
+
+creds.txt
+
+*.crt
+*.key
+*.pem
