@@ -4,6 +4,7 @@ venv/
 .idea/**/
 
 creds.txt
+pass.txt
 
 *.crt
 *.key

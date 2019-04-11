@@ -12,9 +12,10 @@ from urllib.error import HTTPError
 
 
 def connect_vpn():
-    subprocess.Popen(["OpenVPN\\bin\\openvpn", "--config", "OpenVPN\\config\\ynovlyonFirewall-udp-11942-config.ovpn"],
-                     shell=True,
-                     stdin=None, stdout=None, stderr=None, close_fds=True)
+    return subprocess.Popen(
+        ["OpenVPN\\bin\\openvpn", "--config", "OpenVPN\\config\\ynovlyonFirewall-udp-11942-config.ovpn"],
+        shell=True, stdin=None, stdout=subprocess.PIPE, stderr=None
+    )
 
 
 def init_ansible():
@@ -58,6 +59,7 @@ def get_certificate():
     try:
         res = request.urlopen("http://localhost:8000/client/?username=%s&session=%s" % (uname, session)).read()
     except HTTPError:
+        print("Error")
         return
     res = json.loads(res.decode("utf8"))
     if res.get("cert") and res.get("session"):
@@ -95,13 +97,17 @@ class App():
 
 
 if __name__ == "__main__":
-    # connection = Thread(connect_vpn())
-    # connection.start()
-    # connection.join()
-    session = init_ansible()
-    print(os.environ["session"])
+    vpn = connect_vpn()
+    time.sleep(5)
+    while "Connexion pas encore établie":
+        try:
+            line = vpn.stdout.readline().decode("utf-8")
+            print(line)
+        except UnicodeDecodeError:
+            line = ""
+        if "End" in line:
+            break
     app = App()
     app.bQuit.config(text="OK")
     app.root.mainloop()
-
-    print("Fin de la connection")
+    # session = init_ansible()
