@@ -33,7 +33,7 @@ $store.Add($cert)
 $store.Close()
 
 
-$cred = Get-Credential -UserName $username -Message "Nous ne vous le demanderons qu'une seule fois"
+$cred = Get-Credential -UserName $username -Message "Nous ne vous le demanderons qu'une fois."
 $credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $username, $cred.Password
 
 $thumbprint = (Get-ChildItem -Path cert:\LocalMachine\Root | Where-Object { $_.Subject -eq "CN=$username" }).Thumbprint

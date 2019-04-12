@@ -9,3 +9,7 @@ pass.txt
 *.crt
 *.key
 *.pem
+
+
+build/
+dist/

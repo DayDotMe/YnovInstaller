@@ -1,4 +1,4 @@
-import json
+﻿import json
 import os
 import subprocess
 import time
@@ -25,6 +25,7 @@ class App:
         # self.root.overrideredirect(1)
         w = 300
         h = 40
+        self.root.title("Ynov Apps")
         ws = self.root.winfo_screenwidth()  # width of the screen
         hs = self.root.winfo_screenheight()
         x = ws - w
@@ -76,10 +77,10 @@ def connect_vpn():
         ["OpenVPN\\bin\\openvpn", "--config", "OpenVPN\\config\\ynovlyonFirewall-udp-11942-config.ovpn"],
         shell=True, stdin=None, stdout=subprocess.PIPE, stderr=None
     )
-    while "Connexion pas encore établie":
+    while "Connexion en cours":
         try:
             line = vpn.stdout.readline().decode("utf-8")
-            print(line)
+            app.lDisplay.config(text=line)
         except UnicodeDecodeError:
             line = ""
         if "End ipconfig" in line:
